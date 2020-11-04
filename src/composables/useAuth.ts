@@ -11,31 +11,31 @@ interface AuthState {
   info?: AuthInfo;
 }
 
-export module AuthModule {
+// Fetches AuthInfos from localstorage
+export const restoreState = () => {
+  const accessToken = localStorage.getItem('access_token')
+  const refreshToken = localStorage.getItem('refresh_token')
 
-  export const restoreState = () => {
-    const accessToken = localStorage.getItem('access_token')
-    const refreshToken = localStorage.getItem('refresh_token')
-
-    if (refreshToken == null || accessToken == null) {
-      return reactive<AuthState>({
-        authenticated: false,
-        info: undefined
-      })
-    } else {
-      return reactive<AuthState>({
-        authenticated: true,
-        info: {
-          accessToken,
-          refreshToken
-        }
-      })
-    }
+  if (refreshToken == null || accessToken == null) {
+    return reactive<AuthState>({
+      authenticated: false,
+      info: undefined
+    })
+  } else {
+    return reactive<AuthState>({
+      authenticated: true,
+      info: {
+        accessToken,
+        refreshToken
+      }
+    })
   }
+}
 
-  export const state = restoreState()
+export default function useAuth () {
+  const state = restoreState()
 
-  export const spotifyRedirect = () => {
+  const spotifyRedirect = () => {
     var redirectUrl = new URL('https://accounts.spotify.com/authorize')
 
     var parameters = {
@@ -53,7 +53,7 @@ export module AuthModule {
     window.location.replace(redirectUrl.toString())
   }
 
-  export const authorize = (c: string) => {
+  const authorize = (c: string) => {
     AuthApi.post(c).then((resp: any) => {
       localStorage.setItem('access_token', resp.data.access_token)
       localStorage.setItem('refresh_token', resp.data.access_token)
@@ -65,5 +65,11 @@ export module AuthModule {
       }
       console.log(state)
     })
+  }
+
+  return {
+    state,
+    authorize,
+    spotifyRedirect
   }
 }
