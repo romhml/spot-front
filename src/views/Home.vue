@@ -1,24 +1,27 @@
 <template>
-  <div class="home">
-    <h2 v-if="state.authenticated">Authenticated!</h2>
-    <div v-else>
-      <h2>Not authenticated :(</h2>
-      <h2>{{ state.authenticated }}</h2>
+  <div class="bg-yellow flex w-full h-screen">
+    <div class="m-auto h-full w-full" v-if="state.authenticated">
+      <Player />
+    </div>
+    <div class="m-auto" v-else>
       <SignIn />
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SignIn from '../components/auth/SignIn.vue'
+import SignIn from '../components/SignIn.vue'
+import Player from '../components/Player.vue'
+
+// import Palette from '../components/Palette.vue'
 import useAuth from '../composables/useAuth'
 
 export default defineComponent({
   name: 'Home',
   components: {
-    SignIn
+    SignIn,
+    Player
   },
 
   setup () {

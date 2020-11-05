@@ -1,33 +1,21 @@
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
 import { AuthApi } from '@/api/auth'
-
-interface AuthInfo {
-  accessToken: string;
-  refreshToken: string
-}
+import { LocalStorageService } from '@/services/LocalStorageService'
 
 interface AuthState {
   authenticated: boolean
-  info?: AuthInfo;
 }
 
 // Fetches AuthInfos from localstorage
 export const restoreState = () => {
-  const accessToken = localStorage.getItem('access_token')
-  const refreshToken = localStorage.getItem('refresh_token')
-
-  if (refreshToken == null || accessToken == null) {
+  const accessToken = LocalStorageService.getAccessToken()
+  if (accessToken == null) {
     return reactive<AuthState>({
-      authenticated: false,
-      info: undefined
+      authenticated: false
     })
   } else {
     return reactive<AuthState>({
-      authenticated: true,
-      info: {
-        accessToken,
-        refreshToken
-      }
+      authenticated: true
     })
   }
 }
@@ -49,21 +37,16 @@ export default function useAuth () {
       redirectUrl.searchParams.append(param, value)
     }
 
-    console.log(redirectUrl.toString())
     window.location.replace(redirectUrl.toString())
   }
 
   const authorize = (c: string) => {
     AuthApi.post(c).then((resp: any) => {
-      localStorage.setItem('access_token', resp.data.access_token)
-      localStorage.setItem('refresh_token', resp.data.access_token)
-
-      state.authenticated = true
-      state.info = {
+      LocalStorageService.setAuthTokens({
         accessToken: resp.data.access_token,
-        refreshToken: resp.data.access_token
-      }
-      console.log(state)
+        refreshToken: resp.data.refresh_token
+      })
+      state.authenticated = true
     })
   }
 
