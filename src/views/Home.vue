@@ -4,14 +4,14 @@
       <Record class="m-auto"/>
     </div>
     <div class="m-auto" v-else>
-      <SignIn />
+      <SignInButton />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import SignIn from '../components/SignIn.vue'
+import SignInButton from '../components/SignInButton.vue'
 import Record from '../components/player/Record.vue'
 
 // import Palette from '../components/Palette.vue'
@@ -20,7 +20,7 @@ import useAuth from '../composables/useAuth'
 export default defineComponent({
   name: 'Home',
   components: {
-    SignIn,
+    SignInButton,
     Record
   },
 

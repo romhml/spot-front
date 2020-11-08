@@ -2,8 +2,15 @@
   <router-view />
 </template>
 
-<style>
+<script lang="ts">
+import { defineComponent } from 'vue'
 
+export default defineComponent({
+
+})
+</script>
+
+<style>
 #app {
   @apply text-grey;
 
