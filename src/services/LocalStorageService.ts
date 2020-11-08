@@ -7,6 +7,10 @@ export module LocalStorageService {
     localStorage.setItem('refresh_token', authInfo.refreshToken)
   }
 
+  export const setAccessToken = (accessToken: string) => {
+    localStorage.setItem('access_token', accessToken)
+  }
+
   export const getAccessToken = () => {
     return localStorage.getItem('access_token')
   }

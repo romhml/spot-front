@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-yellow flex w-full h-screen">
-    <div class="m-auto h-full w-full" v-if="state.authenticated">
-      <Player />
+  <div class="bg-yellow flex h-screen w-screen">
+    <div class="flex items-center h-full w-full" v-if="state.authenticated">
+      <Record class="m-auto"/>
     </div>
     <div class="m-auto" v-else>
       <SignIn />
@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import SignIn from '../components/SignIn.vue'
-import Player from '../components/Player.vue'
+import Record from '../components/player/Record.vue'
 
 // import Palette from '../components/Palette.vue'
 import useAuth from '../composables/useAuth'
@@ -21,7 +21,7 @@ export default defineComponent({
   name: 'Home',
   components: {
     SignIn,
-    Player
+    Record
   },
 
   setup () {

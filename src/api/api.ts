@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { LocalStorageService } from '@/services/LocalStorageService'
+
+import { addBearerToken, camelizeResponse, snakizeRequest } from './interceptors'
 
 const API_BASE_URL = 'localhost:8000'
 const API_PROTOCOL = 'http://'
@@ -12,14 +13,9 @@ const api = axios.create({
   }
 })
 
-// Intercept request and set authorization header
-api.interceptors.request.use((config) => {
-  const accessToken = LocalStorageService.getAccessToken()
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
-  }
-  return config
-}, error => Promise.reject(error))
+api.interceptors.request.use(addBearerToken, error => Promise.reject(error))
+api.interceptors.request.use(snakizeRequest, error => Promise.reject(error))
+api.interceptors.response.use(camelizeResponse, error => Promise.reject(error))
 
 export {
   api

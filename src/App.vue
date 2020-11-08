@@ -1,13 +1,14 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  @apply text-grey;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: white;
 }
 </style>

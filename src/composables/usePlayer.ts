@@ -1,28 +1,69 @@
 import { reactive } from 'vue'
 import { PlayerApi } from '@/api/spotify/player'
-import { PlayerStatus } from '@/types/PlayerStatus'
+import { Spotify } from '@/types/Spotify'
 
 interface PlayerState {
-  playing: boolean
-  info?: PlayerStatus
+  status?: Spotify.PlayerStatus
 }
 
 export default function usePlayer () {
-  const state: PlayerState = reactive<PlayerState>({
-    playing: false,
-    info: undefined
+  const state = reactive<PlayerState>({
+    status: undefined
   })
 
-  const fetchPlayer = () => {
+  const fetchStatus = async () => {
     PlayerApi.get().then((resp) => {
-      console.log(resp)
-      state.info = resp.data
-      console.log(state)
+      state.status = resp.data
+    })
+  }
+
+  const pollStatus = () => {
+    fetchStatus().then(() => {
+      console.log('Polled PlayerStatus')
+      setTimeout(() => {
+        pollStatus()
+      }, 5000)
+    })
+  }
+
+  const pauseSong = async () => {
+    PlayerApi.pause().then(() => {
+      setTimeout(() => {
+        fetchStatus()
+      }, 500)
+    })
+  }
+
+  const playSong = async () => {
+    PlayerApi.play().then(() => {
+      setTimeout(() => {
+        fetchStatus()
+      }, 500)
+    })
+  }
+
+  const nextSong = async () => {
+    PlayerApi.next().then(() => {
+      setTimeout(() => {
+        fetchStatus()
+      }, 500)
+    })
+  }
+
+  const previousSong = async () => {
+    PlayerApi.previous().then(() => {
+      setTimeout(() => {
+        fetchStatus()
+      }, 500)
     })
   }
 
   return {
-    state,
-    fetchPlayer
+    player: state,
+    pollStatus,
+    nextSong,
+    previousSong,
+    pauseSong,
+    playSong
   }
 }

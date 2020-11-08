@@ -5,6 +5,10 @@ module.exports = {
   },
   purge: [],
   theme: {
+    fontFamily: {
+      display: ['Bebas Neue', 'cursive'],
+      body: ['Poppins', 'sans-serif']
+    },
     extend: {
       colors: {
         yellow: '#ecc94b',

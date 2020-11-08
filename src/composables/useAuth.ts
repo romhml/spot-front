@@ -42,10 +42,7 @@ export default function useAuth () {
 
   const authorize = (c: string) => {
     AuthApi.post(c).then((resp: any) => {
-      LocalStorageService.setAuthTokens({
-        accessToken: resp.data.access_token,
-        refreshToken: resp.data.refresh_token
-      })
+      LocalStorageService.setAuthTokens(resp.data)
       state.authenticated = true
     })
   }
