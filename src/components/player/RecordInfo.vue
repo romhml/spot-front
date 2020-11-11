@@ -1,7 +1,12 @@
 <template>
-  <div class="record-info">
-    <p ref=trackRef class="text-5xl my-auto overflow-auto-scroll">{{ track.name }}</p>
-    <p ref=artistsRef class="text-3xl overflow-auto-scroll">{{ track.artists[0].name }}</p>
+  <div class="record-info flex flex-col">
+    <p class="text-4xl overflow-auto-scroll">
+      {{ track.name }}
+    </p>
+    <span class="separator" />
+    <p class="text-3xl overflow-auto-scroll">
+      {{ track.artists[0].name }}
+    </p>
   </div>
 </template>
 
@@ -49,11 +54,11 @@ export default defineComponent({
     @apply rounded-xl;
     @apply px-4;
     @apply border-pink;
+    @apply bg-pink;
 
     font-family: 'Bebas Neue', cursive;
     text-align: left;
-    width: 25rem;
-    height: 9rem;
+    width: 20rem;
 }
 
 .overflow-auto-scroll {
@@ -67,4 +72,11 @@ export default defineComponent({
   display: none;
 }
 
+.separator {
+  @apply bg-yellow;
+  @apply rounded-r;
+  display: inline-block;
+  height: 0.3rem;
+  width: 40%;
+}
 </style>

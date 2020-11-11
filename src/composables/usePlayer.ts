@@ -20,6 +20,7 @@ export default function usePlayer () {
   const pollStatus = () => {
     fetchStatus().then(() => {
       console.log('Polled PlayerStatus')
+
       setTimeout(() => {
         pollStatus()
       }, 5000)
@@ -58,12 +59,21 @@ export default function usePlayer () {
     })
   }
 
+  const setVolume = async (volume: number) => {
+    PlayerApi.putVolume(volume).then(() => {
+      setTimeout(() => {
+        fetchStatus()
+      }, 500)
+    })
+  }
+
   return {
     player: state,
     pollStatus,
     nextSong,
     previousSong,
     pauseSong,
-    playSong
+    playSong,
+    setVolume
   }
 }

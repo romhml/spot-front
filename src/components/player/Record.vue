@@ -1,6 +1,19 @@
 <template>
-    <div v-if="player.status" class="flex">
-      <div class="vinyl flex">
+    <div v-if="player.status" class="flex" :style="{ width: '90vw', height: '90vh' }">
+
+      <div class="flex-1 grid place-content-between w-1/4 my-16 ml-16">
+        <RecordInfo :track=player.status.item />
+        <PlayerActions
+          class="mt-auto"
+          :isPlaying=player.status.isPlaying
+          @pause=pauseSong
+          @play=playSong
+          @next=nextSong
+          @previous=previousSong
+        />
+      </div>
+
+      <div class="m-auto flex-none vinyl flex">
         <div class="m-auto cover bg-pink">
           <img class="rounded-full w-full h-full"
               :class='player.status.isPlaying ? "rotating" : ""'
@@ -8,24 +21,21 @@
           >
         </div>
       </div>
-      <div class="record-info content-end ml-16">
-        <PlayerActions
-          :isPlaying=player.status.isPlaying
 
-          @pause=pauseSong
-          @play=playSong
-          @next=nextSong
-          @previous=previousSong
+      <div class="flex-1 w-1/4 grid">
+        <Slider :value=player.status.device.volumePercent
+                @update:value="setVolume($event)"
         />
-        <RecordInfo class="mt-4" :track=player.status.item />
       </div>
+
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { ref, defineComponent } from 'vue'
 
 import usePlayer from '../../composables/usePlayer'
+import Slider from './Slider.vue'
 import RecordInfo from './RecordInfo.vue'
 import PlayerActions from './PlayerActions.vue'
 
@@ -33,14 +43,22 @@ export default defineComponent({
   name: 'Record',
   components: {
     RecordInfo,
-    PlayerActions
+    PlayerActions,
+    Slider
   },
 
   setup () {
+    const canvas = ref(null)
     const player = usePlayer()
+
+    // onMounted(() => {
+    //   console.log(canvas.value)
+
+    //   if (canvas.value) {
+    //   }
+    // })
     player.pollStatus()
-    console.log(player)
-    return { ...player }
+    return { ...player, canvas }
   }
 })
 </script>
@@ -70,7 +88,7 @@ export default defineComponent({
   @apply border-4;
   @apply border-pink;
 
-  position: relative;
+  position: relative !important;
   width: 40rem;
 }
 

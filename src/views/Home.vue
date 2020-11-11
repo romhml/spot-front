@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-yellow flex h-screen w-screen">
+  <div class="bg-teal flex h-screen w-screen">
     <div class="flex items-center h-full w-full" v-if="state.authenticated">
-      <Record class="m-auto"/>
+      <Record class="bg-yellow m-8 rounded m-auto shadow-2xl"/>
     </div>
     <div class="m-auto" v-else>
       <SignInButton />
