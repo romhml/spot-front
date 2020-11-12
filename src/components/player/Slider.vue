@@ -1,32 +1,16 @@
 <template>
-  <VueSlider v-model=localValue
-             direction="btt" width="0.8rem"
-             contained="true"
-             silenced="true"
-             :dotOptions=dotOptions
+  <input class="slider"
+         type="range" orient="vertical"
+         min=0 max=100
+         v-model=modelValue
   >
-    <template v-slot:dot>
-      <div class="dot" />
-    </template>
-    <template v-slot:tooltip="{ value }">
-      <div class="tooltip">{{ value }}</div>
-    </template>
-    <template v-slot:process="{ style }">
-      <div class="vue-slider-process process" :style="[ style, process ]" />
-    </template>
-  </VueSlider>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
+import debounce from 'lodash.debounce'
 
 export default defineComponent({
-  components: {
-    VueSlider
-  },
-
   props: {
     value: {
       type: Number,
@@ -35,45 +19,48 @@ export default defineComponent({
   },
 
   setup (props: any, { emit }: { emit: any }) {
-    const localValue = computed({
+    const modelValue = computed({
       get: () => props.value,
-      set: (value) => emit('update:modelValue', value)
+      set: debounce((value: number) => {
+        emit('update:value', value)
+      }, 200)
+
     })
 
-    return { localValue }
+    return { modelValue }
   }
 })
 </script>
 
 <style scoped>
-.dot {
-  @apply rounded;
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+
+  @apply bg-pink;
+  width: 1rem;
+  height: 100%;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
   @apply bg-grey;
-  @apply px-4;
-  width: 100%;
-  height: 1.2rem;
-  transition: all .3s;
+  @apply rounded-lg;
 
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4rem;
+  height: 2rem;
+  cursor: pointer;
 }
 
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
-}
+.slider::-moz-range-thumb {
+  @apply bg-grey;
+  @apply rounded;
 
-.process {
-  @apply bg-pink;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-.process:hover {
-  @apply bg-pink;
+  width: 4rem;
+  height: 2rem;
+  cursor: pointer;
 }
 
 </style>

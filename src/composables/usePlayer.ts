@@ -60,6 +60,7 @@ export default function usePlayer () {
   }
 
   const setVolume = async (volume: number) => {
+    console.log('setting volume')
     PlayerApi.putVolume(volume).then(() => {
       setTimeout(() => {
         fetchStatus()
@@ -68,7 +69,7 @@ export default function usePlayer () {
   }
 
   return {
-    player: state,
+    state,
     pollStatus,
     nextSong,
     previousSong,

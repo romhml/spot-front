@@ -22,7 +22,7 @@ export default defineComponent({
 <style scoped>
 
 button {
-  @apply bg-teal;
+  @apply bg-pink;
   @apply rounded-full;
 
   @apply py-4;

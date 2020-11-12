@@ -40,7 +40,7 @@ export default function useAuth () {
     window.location.replace(redirectUrl.toString())
   }
 
-  const authorize = (c: string) => {
+  const authorize = async (c: string) => {
     AuthApi.post(c).then((resp: any) => {
       LocalStorageService.setAuthTokens(resp.data)
       state.authenticated = true

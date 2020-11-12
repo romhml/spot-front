@@ -13,7 +13,7 @@ import { defineComponent } from 'vue'
 // import usePlayer from '../../composables/usePlayer'
 
 export default defineComponent({
-  name: 'Record',
+  name: 'PlayerActions',
 
   // eslint disable-next-line
   setup (props: Object, { emit } : { emit: any }) {

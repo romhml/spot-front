@@ -23,6 +23,6 @@ export module PlayerApi {
   }
 
   export const putVolume = (volume: Number) => {
-    return api.put('/me/player/volume', { volume_percent: volume })
+    return api.put(`/me/player/volume?volume_percent=${volume}`)
   }
 }

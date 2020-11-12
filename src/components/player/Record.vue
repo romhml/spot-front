@@ -1,66 +1,40 @@
 <template>
-    <div v-if="player.status" class="flex" :style="{ width: '90vw', height: '90vh' }">
-
-      <div class="flex-1 grid place-content-between w-1/4 my-16 ml-16">
-        <RecordInfo :track=player.status.item />
-        <PlayerActions
-          class="mt-auto"
-          :isPlaying=player.status.isPlaying
-          @pause=pauseSong
-          @play=playSong
-          @next=nextSong
-          @previous=previousSong
-        />
-      </div>
-
       <div class="m-auto flex-none vinyl flex">
         <div class="m-auto cover bg-pink">
           <img class="rounded-full w-full h-full"
-              :class='player.status.isPlaying ? "rotating" : ""'
-              :src="player.status.item.album.images[0].url"
+              :class='isPlaying ? "rotating" : ""'
+              :src="cover"
           >
         </div>
       </div>
-
-      <div class="flex-1 w-1/4 grid">
-        <Slider :value=player.status.device.volumePercent
-                @update:value="setVolume($event)"
-        />
-      </div>
-
-    </div>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 
-import usePlayer from '../../composables/usePlayer'
-import Slider from './Slider.vue'
-import RecordInfo from './RecordInfo.vue'
-import PlayerActions from './PlayerActions.vue'
-
 export default defineComponent({
   name: 'Record',
   components: {
-    RecordInfo,
-    PlayerActions,
-    Slider
   },
 
-  setup () {
-    const canvas = ref(null)
-    const player = usePlayer()
+  props: {
+    isPlaying: Boolean,
+    cover: String
+  },
 
+  setup (props: any) {
+    const canvas = ref(null)
     // onMounted(() => {
     //   console.log(canvas.value)
 
     //   if (canvas.value) {
     //   }
     // })
-    player.pollStatus()
-    return { ...player, canvas }
+
+    return { canvas }
   }
 })
+
 </script>
 
 <style scoped>

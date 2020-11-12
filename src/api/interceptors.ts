@@ -29,11 +29,12 @@ export const refreshTokens = (error: any) => {
 
     // Retry original request
     return request.config
+  } else if (error.response.status === 401 && request._retry) {
+    // Could not refresh tokens => clear state (user will go back to Login page)
+    LocalStorageService.clearAuthTokens()
+    router.push('/')
   }
 
-  // Cannot refresh tokens => clear state (user will go back to Login page)
-  LocalStorageService.clearAuthTokens()
-  router.push('/')
   Promise.reject(error)
 }
 
