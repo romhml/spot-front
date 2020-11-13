@@ -1,6 +1,6 @@
 <template>
     <div class="flex bg-teal h-screen w-screen">
-    <div v-if="player.state.status" class="flex bg-yellow m-auto" :style="{ width: '90vw', height: '90vh' }">
+    <div v-if="player.state.status" class="disk-table flex m-auto">
 
       <div class="flex-1 grid place-content-between w-1/4 my-16 ml-16">
         <RecordInfo :track=player.state.status.item />
@@ -14,12 +14,15 @@
         />
       </div>
 
-      <Record :isPlaying=player.state.status.isPlaying
+      <Record class="m-auto grid overflow-hidden"
+              size="40em"
+              :isPlaying=player.state.status.isPlaying
               :cover=player.state.status.item.album.images[0].url
       />
 
-      <div class="flex-1 h-64 w-1/4 grid">
-        <Slider :value=player.state.status.device.volumePercent
+      <div class="flex-1 w-1/4 h-full grid">
+        <Slider class="h-64 mt-auto ml-auto mr-16 mb-16"
+                :value=player.state.status.device.volumePercent
                 @update:value="player.setVolume"
         />
       </div>
@@ -65,4 +68,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.disk-table {
+  @apply rounded;
+  @apply bg-yellow;
+  width: 90%;
+  height: 90%;
+  min-width: 80em;
+  min-height: 40em;
+}
 </style>

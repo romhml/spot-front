@@ -3,7 +3,7 @@
     <button class="player-action px-4 mr-2" @click="previous"> ◄◄ </button>
     <button class="player-action px-8" v-if="isPlaying" @click="pause"> || </button>
     <button class="player-action px-8" v-else @click="play"> ► </button>
-    <button class="player-action px-4 ml-2" @click="previous"> ►► </button>
+    <button class="player-action px-4 ml-2" @click="next"> ►► </button>
   </div>
 </template>
 

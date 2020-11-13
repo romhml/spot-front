@@ -1,9 +1,11 @@
 <template>
-  <input class="slider"
-         type="range" orient="vertical"
-         min=0 max=100
-         v-model=modelValue
-  >
+  <div>
+    <input class="slider"
+           type="range" orient="vertical"
+           min=0 max=100
+           v-model=modelValue
+    >
+  </div>
 </template>
 
 <script lang="ts">
@@ -33,34 +35,65 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.slider {
+
+input[type=range] {
   -webkit-appearance: none;
   appearance: none;
 
-  @apply bg-pink;
-  width: 1rem;
+  width: 1em;
   height: 100%;
   outline: none;
 }
 
-.slider::-webkit-slider-thumb {
+/* Runnable track */
+input[type=range]::-webkit-slider-runnable-track {
+  @apply bg-pink;
+  @apply rounded;
+  height: 100%;
+  width: 1em;
+  cursor: pointer;
+}
+
+/* input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #367ebd;
+} */
+
+input[type=range]::-moz-range-track {
+  @apply bg-pink;
+  @apply rounded;
+  height: 100%;
+  width: 1em;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+  @apply bg-pink;
+  @apply rounded;
+  height: 100%;
+  width: 1em;
+  cursor: pointer;
+}
+
+/* Thumb */
+input[type=range]::-webkit-slider-thumb {
   @apply bg-grey;
   @apply rounded-lg;
 
+  border: none;
   -webkit-appearance: none;
   appearance: none;
-  width: 4rem;
-  height: 2rem;
+  width: 4em;
+  height: 2em;
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
+input[type=range]::-moz-range-thumb {
   @apply bg-grey;
   @apply rounded;
 
-  width: 4rem;
-  height: 2rem;
+  border: none;
+  width: 4em;
+  height: 2em;
   cursor: pointer;
 }
-
 </style>
