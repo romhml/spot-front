@@ -4,23 +4,31 @@ import { Spotify } from '@/types/Spotify'
 
 interface PlayerState {
   status?: Spotify.PlayerStatus
+  playing: boolean
+  progressPercent: number
+  volumePercent: number
 }
 
 export default function usePlayer () {
   const state = reactive<PlayerState>({
-    status: undefined
+    status: undefined,
+    playing: false,
+    progressPercent: 0,
+    volumePercent: 0
   })
 
   const fetchStatus = async () => {
     PlayerApi.get().then((resp) => {
-      state.status = resp.data
+      const data = resp.data
+      state.status = data
+      state.playing = data.isPlaying
+      state.progressPercent = 100 * data.progressMs / data.item.durationMs
+      state.volumePercent = data.device.volumePercent
     })
   }
 
   const pollStatus = () => {
     fetchStatus().then(() => {
-      console.log('Polled PlayerStatus')
-
       setTimeout(() => {
         pollStatus()
       }, 5000)
@@ -29,17 +37,13 @@ export default function usePlayer () {
 
   const pauseSong = async () => {
     PlayerApi.pause().then(() => {
-      setTimeout(() => {
-        fetchStatus()
-      }, 500)
+      state.playing = false
     })
   }
 
   const playSong = async () => {
     PlayerApi.play().then(() => {
-      setTimeout(() => {
-        fetchStatus()
-      }, 500)
+      state.playing = true
     })
   }
 
@@ -60,21 +64,29 @@ export default function usePlayer () {
   }
 
   const setVolume = async (volume: number) => {
-    console.log('setting volume')
     PlayerApi.putVolume(volume).then(() => {
-      setTimeout(() => {
-        fetchStatus()
-      }, 500)
+      state.volumePercent = volume
     })
   }
 
+  const seekTo = async (positionPercent: number) => {
+    if (state.status) {
+      const duration = state.status.item.durationMs
+      PlayerApi.seek(Math.round((positionPercent * duration) / 100)).then(() => {
+        state.progressPercent = positionPercent
+      })
+    }
+  }
+
+  pollStatus()
+
   return {
     state,
-    pollStatus,
     nextSong,
     previousSong,
     pauseSong,
     playSong,
-    setVolume
+    setVolume,
+    seekTo
   }
 }

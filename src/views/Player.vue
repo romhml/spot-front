@@ -6,7 +6,7 @@
         <RecordInfo :track=player.state.status.item />
         <PlayerActions
           class="mt-auto"
-          :isPlaying=player.state.status.isPlaying
+          :playing=player.state.playing
           @pause=player.pauseSong
           @play=player.playSong
           @next=player.nextSong
@@ -16,14 +16,17 @@
 
       <Record class="m-auto grid overflow-hidden"
               size="40em"
-              :isPlaying=player.state.status.isPlaying
+              :playing=player.state.playing
               :cover=player.state.status.item.album.images[0].url
+              :progress=player.state.progressPercent
+              @update:progress="player.seekTo"
       />
 
       <div class="flex-1 w-1/4 h-full grid">
         <Slider class="h-64 mt-auto ml-auto mr-16 mb-16"
-                :value=player.state.status.device.volumePercent
+                :value=player.state.volumePercent
                 @update:value="player.setVolume"
+                vertical
         />
       </div>
 
@@ -32,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 
 import usePlayer from '../composables/usePlayer'
 
@@ -51,18 +54,8 @@ export default defineComponent({
   },
 
   setup () {
-    const canvas = ref(null)
     const player = usePlayer()
-
-    // onMounted(() => {
-    //   console.log(canvas.value)
-
-    //   if (canvas.value) {
-    //   }
-    // })
-
-    player.pollStatus()
-    return { player, canvas }
+    return { player }
   }
 })
 </script>

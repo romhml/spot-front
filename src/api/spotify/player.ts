@@ -22,7 +22,11 @@ export module PlayerApi {
     return api.post('/me/player/previous')
   }
 
-  export const putVolume = (volume: Number) => {
+  export const putVolume = (volume: number) => {
     return api.put(`/me/player/volume?volume_percent=${volume}`)
+  }
+
+  export const seek = (positionMs: number) => {
+    return api.put(`/me/player/seek?position_ms=${positionMs}`)
   }
 }
