@@ -1,11 +1,13 @@
 <template>
   <div class="record-info flex flex-col">
     <p class="text-4xl overflow-auto-scroll">
-      {{ track.name }}
+      <span v-if="track"> {{ track.name }}</span>
+      <span v-else> Press Play!</span>
     </p>
     <span class="separator" />
     <p class="text-3xl overflow-auto-scroll">
-      {{ track.artists[0].name }}
+      <span v-if="track && track.artists !== []" > {{ track.artists[0].name }}</span>
+      <span />
     </p>
   </div>
 </template>

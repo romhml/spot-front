@@ -1,9 +1,8 @@
 <template>
   <div class="flex bg-teal h-screen w-screen">
-    <div v-if="player.state.status" class="disk-table flex m-auto">
-
+    <div class="disk-table flex m-auto">
       <div class="grid place-content-between w-1/4 my-16 ml-16">
-        <RecordInfo :track=player.state.status.item />
+        <RecordInfo :track=player.state.currentTrack />
 
         <div class="mt-auto">
          <PlayerActions
@@ -25,7 +24,7 @@
       <Record class="m-auto"
               size="45em"
               :playing=player.state.playing
-              :cover=player.state.status.item.album.images[0].url
+              :cover=player.state.coverUrl
               :progress=player.state.progressPercent
               @update:progress="player.seekTo"
       />

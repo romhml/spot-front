@@ -3,7 +3,8 @@ import { PlayerApi } from '@/api/spotify/player'
 import { Spotify } from '@/types/Spotify'
 
 interface PlayerState {
-  status?: Spotify.PlayerStatus
+  currentTrack?: Spotify.Track
+  coverUrl?: string
   playing: boolean
   progressPercent: number
   volumePercent: number
@@ -11,7 +12,7 @@ interface PlayerState {
 
 export default function usePlayer () {
   const state = reactive<PlayerState>({
-    status: undefined,
+    currentTrack: undefined,
     playing: false,
     progressPercent: 0,
     volumePercent: 0
@@ -20,7 +21,8 @@ export default function usePlayer () {
   const fetchStatus = async () => {
     PlayerApi.get().then((resp) => {
       const data = resp.data
-      state.status = data
+      state.currentTrack = data.item
+      state.coverUrl = data.item.album.images[0].url
       state.playing = data.isPlaying
       state.progressPercent = 100 * data.progressMs / data.item.durationMs
       state.volumePercent = data.device.volumePercent
@@ -70,8 +72,8 @@ export default function usePlayer () {
   }
 
   const seekTo = async (positionPercent: number) => {
-    if (state.status) {
-      const duration = state.status.item.durationMs
+    if (state.currentTrack) {
+      const duration = state.currentTrack.durationMs
       PlayerApi.seek(Math.round((positionPercent * duration) / 100)).then(() => {
         state.progressPercent = positionPercent
       })
