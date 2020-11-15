@@ -1,37 +1,36 @@
 <template>
-    <div class="flex bg-teal h-screen w-screen">
+  <div class="flex bg-teal h-screen w-screen">
     <div v-if="player.state.status" class="disk-table flex m-auto">
 
-      <div class="flex-1 grid place-content-between w-1/4 my-16 ml-16">
+      <div class="grid place-content-between w-1/4 my-16 ml-16">
         <RecordInfo :track=player.state.status.item />
-        <PlayerActions
-          class="mt-auto"
-          :playing=player.state.playing
-          @pause=player.pauseSong
-          @play=player.playSong
-          @next=player.nextSong
-          @previous=player.previousSong
-        />
+
+        <div class="mt-auto">
+         <PlayerActions
+            class="mt-auto"
+            :playing=player.state.playing
+            @pause=player.pauseSong
+            @play=player.playSong
+            @next=player.nextSong
+            @previous=player.previousSong
+          />
+          <Slider class="w-full mt-8"
+                  :value=player.state.volumePercent
+                  @update:value="player.setVolume"
+          />
+
+        </div>
       </div>
 
-      <Record class="m-auto grid overflow-hidden"
-              size="40em"
+      <Record class="m-auto"
+              size="45em"
               :playing=player.state.playing
               :cover=player.state.status.item.album.images[0].url
               :progress=player.state.progressPercent
               @update:progress="player.seekTo"
       />
-
-      <div class="flex-1 w-1/4 h-full grid">
-        <Slider class="h-64 mt-auto ml-auto mr-16 mb-16"
-                :value=player.state.volumePercent
-                @update:value="player.setVolume"
-                vertical
-        />
-      </div>
-
     </div>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -65,7 +64,7 @@ export default defineComponent({
   @apply rounded;
   @apply bg-yellow;
   width: 90%;
-  height: 90%;
+  height: 95%;
   min-width: 80em;
   min-height: 40em;
 }

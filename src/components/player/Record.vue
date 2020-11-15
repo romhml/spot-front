@@ -1,7 +1,7 @@
 <template>
   <div>
     <svg :width=size :height=size
-          viewBox="-120 -120 240 240"
+          viewBox="-100 -100 200 200"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -32,18 +32,16 @@
       </defs>
     </svg>
 
-    <Slider v-model:value=progressValue />
+    <!-- Slider v-model:value=progressValue / -->
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import Slider from './Slider.vue'
 
 export default defineComponent({
   name: 'Record',
   components: {
-    Slider
   },
 
   props: {
