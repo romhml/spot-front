@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center">
     <button class="player-action px-4 mr-2" @click="previous"> ◄◄ </button>
-    <button class="player-action px-8" v-if="isPlaying" @click="pause"> || </button>
+    <button class="player-action px-8" v-if="playing" @click="pause"> || </button>
     <button class="player-action px-8" v-else @click="play"> ► </button>
     <button class="player-action px-4 ml-2" @click="next"> ►► </button>
   </div>
@@ -14,8 +14,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PlayerActions',
+  props: {
+    playing: Boolean
+  },
 
-  // eslint disable-next-line
   setup (props: Object, { emit } : { emit: any }) {
     const play = () => {
       emit('play')
@@ -34,10 +36,6 @@ export default defineComponent({
     }
 
     return { play, pause, next, previous }
-  },
-
-  props: {
-    isPlaying: Boolean
   }
 })
 </script>

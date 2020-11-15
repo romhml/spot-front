@@ -7,12 +7,12 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
     >
       <circle cx="0" cy="0" r="100" fill="#2d3748"/>
-      <line x1="110" y1="-100" x2="110" y2="50"
+      <!--<line x1="110" y1="-100" x2="110" y2="50"
         stroke=#d53f8c stroke-width=6
         stroke-linecap="round"
         transition="rotate .5s ease"
         :transform="`rotate(0, 100, -100)`"
-      />
+        />-->
       <!-- 6 to 24 -->
       <circle cx="0" cy="0" r="53" fill="#D53F8C" />
       <mask id="centerMask" mask-type="alpha" maskUnits="userSpaceOnUse" x="-55" y="-55" width="110" height="110">
