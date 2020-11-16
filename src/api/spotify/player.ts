@@ -6,8 +6,12 @@ export module PlayerApi {
     return api.get<Spotify.PlayerStatus>('/me/player')
   }
 
-  export const play = () => {
-    return api.put('/me/player/play')
+  export const play = (uri?: string) => {
+    if (uri) {
+      return api.put('/me/player/play', { uris: [uri] })
+    } else {
+      return api.put('/me/player/play')
+    }
   }
 
   export const pause = () => {

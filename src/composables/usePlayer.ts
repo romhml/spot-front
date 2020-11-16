@@ -31,37 +31,32 @@ export default function usePlayer () {
 
   const pollStatus = () => {
     fetchStatus().then(() => {
-      setTimeout(() => {
-        pollStatus()
-      }, 5000)
+      setTimeout(pollStatus, 5000)
     })
   }
 
-  const pauseSong = async () => {
+  const pause = async () => {
     PlayerApi.pause().then(() => {
       state.playing = false
     })
   }
 
-  const playSong = async () => {
-    PlayerApi.play().then(() => {
+  const play = async (uri?: string) => {
+    PlayerApi.play(uri).then(() => {
       state.playing = true
+      setTimeout(fetchStatus, 200)
     })
   }
 
   const nextSong = async () => {
     PlayerApi.next().then(() => {
-      setTimeout(() => {
-        fetchStatus()
-      }, 500)
+      setTimeout(fetchStatus, 500)
     })
   }
 
   const previousSong = async () => {
     PlayerApi.previous().then(() => {
-      setTimeout(() => {
-        fetchStatus()
-      }, 500)
+      setTimeout(fetchStatus, 500)
     })
   }
 
@@ -80,14 +75,13 @@ export default function usePlayer () {
     }
   }
 
-  pollStatus()
-
   return {
     state,
+    pollStatus,
     nextSong,
     previousSong,
-    pauseSong,
-    playSong,
+    pause,
+    play,
     setVolume,
     seekTo
   }
