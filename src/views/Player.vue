@@ -1,38 +1,38 @@
 <template>
-    <div class="flex bg-teal h-screen w-screen">
+  <div class="flex bg-teal h-screen w-screen">
     <div class="search-overlay relative"
          :class="searchOverlay.show ? '' : 'hidden'"
-    >
-      <Search />
+         >
+         <Search />
     </div>
-    <div class="disk-table flex m-auto">
-      <div class="grid place-content-between w-1/4 my-16 ml-16">
-        <RecordInfo :track=player.state.currentTrack />
+      <div class="disk-table flex m-auto">
+        <div class="grid place-content-between w-1/4 my-16 ml-16">
+          <RecordInfo :track=player.state.currentTrack />
 
-        <div class="mt-auto">
-          <PlayerActions
-            class="mt-auto"
-            :playing=player.state.playing
-            @pause=player.pause
-            @play=player.play
-            @next=player.next
-            @previous=player.previous
-          />
-          <Slider class="w-full mt-8"
-                  :value=player.state.volumePercent
-                  @update:value="player.setVolume"
-          />
-        </div>
-      </div>
-
-      <Record class="m-auto"
-              size="45em"
+          <div class="mt-auto">
+            <PlayerActions
+              class="mt-auto"
               :playing=player.state.playing
-              :cover=player.state.coverUrl
-              :progress=player.state.progressPercent
-              @update:progress="player.seekTo"
-      />
-    </div>
+              @pause=player.pause
+              @play=player.play
+              @next=player.next
+              @previous=player.previous
+              />
+            <Slider class="w-full mt-8"
+                    :value=player.state.volumePercent
+                    @update:value="player.setVolume"
+                    />
+          </div>
+        </div>
+
+        <Record class="m-auto"
+                size="45em"
+                :playing=player.state.playing
+                :cover=player.state.coverUrl
+                :progress=player.state.progressPercent
+                @update:progress="player.seekTo"
+                />
+      </div>
   </div>
 </template>
 
@@ -66,19 +66,21 @@ export default defineComponent({
 
     // Player shortcuts
     window.addEventListener('keyup', (event) => {
-      if (event.key === ' ') {
-        player.state.playing ? player.pause() : player.play()
-      } else if (event.key === 'ArrowRight') {
-        player.next()
-      } else if (event.key === 'ArrowLeft') {
-        player.previous()
-      } else if (event.key === 'ArrowUp') {
-        if (player.state.volumePercent < 100) {
-          player.setVolume(Math.min(player.state.volumePercent + 5, 100))
-        }
-      } else if (event.key === 'ArrowDown') {
-        if (player.state.volumePercent > 0) {
-          player.setVolume(Math.max(player.state.volumePercent - 5, 0))
+      if (!searchOverlay.show) {
+        if (event.key === ' ') {
+          player.state.playing ? player.pause() : player.play()
+        } else if (event.key === 'ArrowRight') {
+          player.next()
+        } else if (event.key === 'ArrowLeft') {
+          player.previous()
+        } else if (event.key === 'ArrowUp') {
+          if (player.state.volumePercent < 100) {
+            player.setVolume(Math.min(player.state.volumePercent + 5, 100))
+          }
+        } else if (event.key === 'ArrowDown') {
+          if (player.state.volumePercent > 0) {
+            player.setVolume(Math.max(player.state.volumePercent - 5, 0))
+          }
         }
       }
     })

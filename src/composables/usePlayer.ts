@@ -31,7 +31,7 @@ export default function usePlayer () {
 
   const pollStatus = () => {
     fetchStatus().then(() => {
-      setTimeout(pollStatus, 5000)
+      setTimeout(pollStatus, 10000)
     })
   }
 
