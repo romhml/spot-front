@@ -1,5 +1,5 @@
 <template>
-  <input type=text placeholder="Search" @input=emitInput>
+  <input type=text placeholder="Search" @input=emitInput autofocus>
 </template>
 
 <script lang="ts">

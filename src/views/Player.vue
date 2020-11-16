@@ -1,6 +1,8 @@
 <template>
-  <div class="flex bg-teal h-screen w-screen">
-    <div class="search-overlay relative">
+    <div class="flex bg-teal h-screen w-screen">
+    <div class="search-overlay relative"
+         :class="searchOverlay.show ? '' : 'hidden'"
+    >
       <Search />
     </div>
     <div class="disk-table flex m-auto">
@@ -11,10 +13,10 @@
           <PlayerActions
             class="mt-auto"
             :playing=player.state.playing
-            @pause=player.pauseSong
+            @pause=player.pause
             @play=player.play
             @next=player.next
-            @previous=player.previousSong
+            @previous=player.previous
           />
           <Slider class="w-full mt-8"
                   :value=player.state.volumePercent
@@ -35,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 
 import usePlayer from '../composables/usePlayer'
 
@@ -59,7 +61,38 @@ export default defineComponent({
   setup (props: {}, { emit }: { emit: any}) {
     const player = usePlayer()
     player.pollStatus()
-    return { player }
+
+    const searchOverlay = reactive({ show: false })
+
+    // Player shortcuts
+    window.addEventListener('keyup', (event) => {
+      if (event.key === ' ') {
+        player.state.playing ? player.pause() : player.play()
+      } else if (event.key === 'ArrowRight') {
+        player.next()
+      } else if (event.key === 'ArrowLeft') {
+        player.previous()
+      } else if (event.key === 'ArrowUp') {
+        if (player.state.volumePercent < 100) {
+          player.setVolume(Math.min(player.state.volumePercent + 5, 100))
+        }
+      } else if (event.key === 'ArrowDown') {
+        if (player.state.volumePercent > 0) {
+          player.setVolume(Math.max(player.state.volumePercent - 5, 0))
+        }
+      }
+    })
+
+    // Search shortcuts
+    window.addEventListener('keyup', (event) => {
+      if (event.key === 'f' && !searchOverlay.show) {
+        searchOverlay.show = true
+      } else if (event.key === 'Escape' && searchOverlay.show) {
+        searchOverlay.show = false
+      }
+    })
+
+    return { player, searchOverlay }
   }
 })
 </script>

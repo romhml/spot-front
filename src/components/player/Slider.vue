@@ -3,7 +3,7 @@
     <input class="slider"
            type="range"
            min=0 max=100
-           v-model=modelValue
+           v-model.number=modelValue
     >
   </div>
 </template>
@@ -33,12 +33,12 @@ export default defineComponent({
   },
 
   setup (props: any, { emit }: { emit: any }) {
-    const modelValue = computed({
+    const modelValue = computed<number>({
       get: () => props.value,
       set: debounce((value: number) => {
-        emit('update:value', value)
+        console.log(value)
+        emit('update:value', value) // parseFloat required because somehow value is a string.. What the actual fuck?
       }, 200)
-
     })
 
     return { modelValue }

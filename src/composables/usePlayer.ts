@@ -48,13 +48,13 @@ export default function usePlayer () {
     })
   }
 
-  const nextSong = async () => {
+  const next = async () => {
     PlayerApi.next().then(() => {
       setTimeout(fetchStatus, 500)
     })
   }
 
-  const previousSong = async () => {
+  const previous = async () => {
     PlayerApi.previous().then(() => {
       setTimeout(fetchStatus, 500)
     })
@@ -78,8 +78,8 @@ export default function usePlayer () {
   return {
     state,
     pollStatus,
-    nextSong,
-    previousSong,
+    next,
+    previous,
     pause,
     play,
     setVolume,
