@@ -19,5 +19,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: lint
+        run: eslint src/
+
       - name: build
-        run: docker build . -t spot-front:${GITHUB_REF}
+        run: docker build . -t spot-front:${GITHUB_SHA} -t spot-front:latest
