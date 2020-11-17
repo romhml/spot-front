@@ -30,11 +30,13 @@ export default function useAuth () {
       response_type: 'code',
       client_id: process.env.VUE_APP_ID,
       redirect_uri: process.env.VUE_APP_REDIRECT_URI,
-      scope: encodeURIComponent(process.env.VUE_APP_SCOPES)
+      scope: process.env.VUE_APP_SCOPES ? encodeURIComponent(process.env.VUE_APP_SCOPES) : undefined
     }
 
     for (const [param, value] of Object.entries(parameters)) {
-      redirectUrl.searchParams.append(param, value)
+      if (value) {
+        redirectUrl.searchParams.append(param, value)
+      }
     }
 
     window.location.replace(redirectUrl.toString())
