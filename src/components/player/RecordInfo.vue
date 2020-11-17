@@ -1,48 +1,62 @@
 <template>
   <div class="record-info flex flex-col">
-    <p class="text-4xl overflow-auto-scroll">
-      <span v-if="track"> {{ track.name }}</span>
-      <span v-else> Press Play!</span>
+    <p ref="trackRef" class="text-4xl overflow-auto-scroll">
+    <span v-if="track"> {{ track.name }}</span>
+    <span v-else>Press Play!</span>
     </p>
     <span class="separator" />
-    <p class="text-3xl overflow-auto-scroll">
+      <p ref="artistRef" class="text-3xl overflow-auto-scroll">
       <span v-if="track && track.artists !== []" > {{ track.artists[0].name }}</span>
-      <span />
-    </p>
+      <span v-else>Or type F to search a song</span>
+      </p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { ref, onMounted, defineComponent } from 'vue'
 // import { Spotify } from '../../types/Spotify'
 
 export default defineComponent({
   name: 'RecordInfo',
 
-  // // TODO Implement autoscrolling on overflow
-  // // TODO Look for an alternative in Vue3 to acces this.$els
-  // setup () {
-  //   const trackRef = ref(null)
+  setup () {
+    const trackRef = ref(null)
+    const artistRef = ref(null)
 
-  //   onMounted(() => {
-  //     console.log(trackRef.value)
-  //     const track: any = trackRef.value
+    const autoScroll = (element?: any) => {
+      if (element) {
+        window.addEventListener('load', () => {
+          const scroller = { backtracking: false, waiting: 0 }
+          self.setInterval(() => {
+            if (!scroller.backtracking && scroller.waiting === 0) {
+              if (element.scrollLeft < element.scrollWidth - element.clientWidth) {
+                element.scrollTo(element.scrollLeft + 1, 0)
+              } else {
+                scroller.backtracking = true
+                scroller.waiting = 1
+              }
+            } else if (scroller.waiting === 0) {
+              if (element.scrollLeft > 0) {
+                element.scrollTo(element.scrollLeft - 1, 0)
+              } else {
+                scroller.backtracking = false
+                scroller.waiting = 1
+              }
+            } else {
+              scroller.waiting = (scroller.waiting > 20) ? 0 : scroller.waiting + 1
+            }
+          }, 50)
+        })
+      }
+    }
 
-  //     if (track) {
-  //       const scrollWidth = track.scrollWidth
-  //       console.log(track)
-  //       window.addEventListener('load', () => {
-  //         self.setInterval(() => {
-  //           if (track.scrollLeft !== scrollWidth) {
-  //             track.value.scrollTo(scrollWidth + 1, 0)
-  //           }
-  //         }, 15)
-  //       })
-  //     }
-  //   })
+    onMounted(() => {
+      autoScroll(trackRef.value)
+      autoScroll(artistRef.value)
+    })
 
-  //   return { trackRef }
-  // },
+    return { trackRef, artistRef }
+  },
 
   props: {
     track: Object // TODO look to use Spotify.Track
@@ -52,15 +66,15 @@ export default defineComponent({
 
 <style scoped>
 .record-info {
-    @apply border-8;
-    @apply rounded-xl;
-    @apply px-4;
-    @apply border-pink;
-    @apply bg-pink;
+  @apply border-8;
+  @apply rounded-xl;
+  @apply px-4;
+  @apply border-pink;
+  @apply bg-pink;
 
-    font-family: 'Bebas Neue', cursive;
-    text-align: left;
-    width: 20rem;
+  font-family: 'Bebas Neue', cursive;
+  text-align: left;
+  width: 20rem;
 }
 
 .overflow-auto-scroll {

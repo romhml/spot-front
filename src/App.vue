@@ -11,6 +11,7 @@ export default defineComponent({})
 <style>
 #app {
   @apply text-grey;
+  cursor: default;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
