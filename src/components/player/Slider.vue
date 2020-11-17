@@ -36,7 +36,6 @@ export default defineComponent({
     const modelValue = computed<number>({
       get: () => props.value,
       set: debounce((value: number) => {
-        console.log(value)
         emit('update:value', value) // parseFloat required because somehow value is a string.. What the actual fuck?
       }, 200)
     })

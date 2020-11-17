@@ -20,10 +20,8 @@ export const refreshTokens = (error: any) => {
 
   if (error.response.status === 401 && !request._retry && refreshToken != null) {
     request._retry = true
-    console.log('TODO Implement refresh token API')
 
     AuthApi.refresh(refreshToken).then((response) => {
-      console.log(response)
       LocalStorageService.setAccessToken(response.data.accessToken)
     })
 

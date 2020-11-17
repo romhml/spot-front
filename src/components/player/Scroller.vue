@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted, defineComponent } from 'vue'
-// import { Spotify } from '../../types/Spotify'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Scroller',
@@ -17,33 +16,6 @@ export default defineComponent({
   props: {
     height: String,
     width: String
-  },
-
-  // TODO Implement autoscrolling on overflow
-  // TODO Look for an alternative in Vue3 to acces this.$els
-  setup () {
-    const autoScroll = ref(null)
-
-    onMounted(() => {
-      console.log(autoScroll.value)
-    })
-
-    // const track = document.getElementById('#track')
-    // console.log(track)
-
-    // if (track) {
-    //   const scrollWidth = track.scrollWidth
-
-    //   window.addEventListener('load', () => {
-    //     self.setInterval(() => {
-    //       if (track.scrollLeft !== scrollWidth) {
-    //         track.scrollTo(scrollWidth + 1, 0)
-    //       }
-    //     }, 15)
-    //   })
-    // }
-
-    return { autoScroll }
   }
 })
 </script>

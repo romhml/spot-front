@@ -10,7 +10,6 @@ const auth = { ...useAuth() }
 
 const ifAuthenticated = (to: any, from: any, next: any) => {
   if (auth.state.authenticated) {
-    console.log(auth.state.authenticated)
     next()
   } else {
     next('/')
